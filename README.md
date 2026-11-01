@@ -53,7 +53,7 @@ OLLAMA_API_KEY=your_key_here
 `.env` is git-ignored. Never commit it.
 
 ```bash
-make test           # runs the test suite
+make test           # unit tests (pytest, no network or models needed)
 make lint           # flake8
 make help           # lists all targets
 ```
@@ -195,10 +195,34 @@ ui/metrics.py          latency metrics
 utils/pdf_ingest.py    PDF parsing, cleaning and chunking
 utils/latex.py         LaTeX normalisation and rendering
 utils/text.py          name sanitisation
-tests/                 smoke tests
+tests/                 unit tests (pytest)
+conftest.py            makes the project root importable for pytest
 ```
 
 ---
+
+## Testing
+
+```bash
+make test      # 45 unit tests, ~0.6 s
+make lint      # flake8
+```
+
+The tests cover the parts that fail silently if they break, and none of
+them need a model, a network call or a database:
+
+- **`utils/pdf_ingest`** — header and index removal, and that chunks are
+  never cut mid-sentence and never lose text. Bad chunking degrades
+  retrieval without raising any error.
+- **`rag.resolve_citations`** — that `[Fn]` maps to a real source, and
+  that an out-of-range id is dropped rather than left broken.
+- **`llm.is_cloud_model`** — local/cloud routing.
+- **`rag.build_prompt`** — that the grounding rules and the
+  "no relevant documents" branch are actually present.
+- **`utils.text.sanitize_name`** — including a regression test for
+  accents: `Matemáticas` used to become `matemticas`, which silently
+  created a second, empty subject folder.
+- **`utils.latex`** — LaTeX delimiter conversion.
 
 ## What works
 
