@@ -1,0 +1,11 @@
+# Runtime
+streamlit
+chromadb
+ollama
+python-dotenv
+PyPDF2
+sentence_transformers
+
+# Lint
+flake8
+flake8-bugbear

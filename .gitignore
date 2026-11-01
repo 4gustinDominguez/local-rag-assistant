@@ -1,0 +1,26 @@
+# Secrets
+.env
+
+# Python
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Local data — not part of the repository
+# (PDFs are university material; re-ingest your own after cloning)
+subjects/*/docs/
+chats/
+
+# Generated indexes
+subjects/*/db/
+logs/*.log
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
