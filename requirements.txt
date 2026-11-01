@@ -9,3 +9,6 @@ sentence_transformers
 # Lint
 flake8
 flake8-bugbear
+
+# Test
+pytest

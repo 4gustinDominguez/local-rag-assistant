@@ -18,7 +18,7 @@ run:
 	$(PYTHON) -m streamlit run app.py
 
 test:
-	$(PYTHON) -m tests.reproduce_latex
+	$(PYTHON) -m pytest -q
 
 lint:
 	$(PYTHON) -m flake8 .
