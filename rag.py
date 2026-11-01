@@ -28,8 +28,9 @@ def resolve_citations(answer: str, docs: list) -> str:
 
     resolved = _CITE.sub(repl, answer)
     # Drop orphan separators left behind by a removed citation
-    # ("..., y  ." -> "..., y .")
-    return re.sub(r"[,;:\s]*\s*\.", ".", resolved)
+    # ("..., y  ." -> "..., y .") and any doubled space it leaves
+    resolved = re.sub(r"[,;:\s]*\s*\.", ".", resolved)
+    return re.sub(r"(?<=\S) {2,}(?=\S)", " ", resolved)
 
 
 def build_prompt(question, docs, memory=None):
