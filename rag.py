@@ -1,10 +1,13 @@
 import re
 
-from config.rag_defaults import CONTEXTOS
 from db import retrieve
 
 # Citations emitted by the model: [F1], [F1][F4], [F2][F3]
 _CITE = re.compile(r"\[F(\d+)\]")
+
+# System context. There is no per-subject context: every subject shares
+# this one, and the grounding rules below do the heavy lifting.
+DEFAULT_CONTEXT = "Asistente general."
 
 
 def resolve_citations(answer: str, docs: list) -> str:
@@ -29,9 +32,7 @@ def resolve_citations(answer: str, docs: list) -> str:
     return re.sub(r"[,;:\s]*\s*\.", ".", resolved)
 
 
-def build_prompt(question, docs, subject, memory=None):
-    contexto = CONTEXTOS.get(subject, "Asistente general.")
-
+def build_prompt(question, docs, memory=None):
     history_block = ""
     if memory:
         history_block = "\n".join(
@@ -49,7 +50,7 @@ def build_prompt(question, docs, subject, memory=None):
         docs_block = "(sin documentos relevantes para esta pregunta)"
 
     return f"""
-{contexto}
+{DEFAULT_CONTEXT}
 
 Historial reciente:
 {history_block}
@@ -97,7 +98,6 @@ def run_rag(question, subject, memory, cfg):
     prompt = build_prompt(
         question,
         docs,
-        subject,
         memory
     )
 

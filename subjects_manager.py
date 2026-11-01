@@ -13,11 +13,6 @@ def create_subject(name: str):
     os.makedirs(os.path.join(subject_path, "docs"), exist_ok=True)
     os.makedirs(os.path.join(subject_path, "db"), exist_ok=True)
 
-    context_file = os.path.join(subject_path, "context.txt")
-    if not os.path.exists(context_file):
-        with open(context_file, "w", encoding="utf-8") as f:
-            f.write(f"Contexto base para la asignatura {name}.\n")
-
     return clean
 
 
